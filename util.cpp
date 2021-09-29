@@ -109,16 +109,18 @@ int startMSInfo32andFixText() {
     processID = pi.dwProcessId;
     processHandle = pi.hProcess;
 
-    // Resume the execution of the process, once all libraries have been injected
-    // into its address space.
+    //Resume Process
     if (ResumeThread(pi.hThread) == -1) {
         return 2;
     }
 
+    //Stop Debugging Process
     DebugActiveProcessStop(pi.dwProcessId);
 
+    //Wait for process to have time to create a window
     Sleep(250);
 
+    //Search for MSINFO32 Window and edit label
     EnumWindows(_searchForProc, NULL);
 
     Sleep(3000);
